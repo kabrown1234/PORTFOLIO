@@ -1,0 +1,329 @@
+
+#include <stdio.h>
+
+int main (void)
+{	
+
+
+	/* 	-----------------------------------------------------------------------
+	The following program will prompt the user to enter a current bank account 
+	balance. The user will then enter a maximum of 50 withdrawals and 50 deposits.	
+	Based on withdrawals and deposits, a calculation of the closing balance will 
+	be output along with a banking summary.
+  	------------------------------------------------------------------------- */
+		
+	
+	
+	
+	/*	Declare character veriable. */
+
+	char name[25];
+	
+	
+	/*	Declare integer veriables. */
+	
+	int number_Deposits;
+	int number_Withdrawls;
+	int d;
+	int w;
+	
+	
+	/* Declare and assign values to float veriables. */
+	
+	float current_Balance = 0.0;
+	float running_Balance = 0.0;
+	float final_Balance = 0.0;
+	float total_Balance = 0.0;
+	float total_Deposits = 0.0;
+	float total_Withdrawls = 0.0;
+	float deposits [50];
+	float withdrawals [50];
+
+
+	
+	
+	/* Begin program. Display welcome message and prompt user for name. */
+	
+	printf( "\n Welcome to the Brown Banking System. \n" );
+	
+	
+	/* Prompt user to input name and display name. */
+	
+	printf( "\n Please enter your name: " );
+	scanf( "%s", name );
+	fflush( stdin );
+	
+	printf( "\n\n Hello %s", name );
+	
+
+
+	
+	/* Loop to prompt user for opening balance. */
+	
+	do
+	{
+		printf( "\n\n Now enter your current balance in dollars and cents: " );
+		scanf( "%f", &current_Balance );
+		fflush( stdin );	
+		
+			
+		/* Trap to make user enter a value greater than zero. */
+			
+		if( current_Balance <= 0.0 )
+		printf( "\n\t Error: Please enter a balance more than zero. \n" );
+		
+	
+	}while( current_Balance <= 0.0 );
+	
+	/* End loop. */
+	
+	
+	
+	
+	/* Loop to prompt user for number of withdrawls. */
+	
+	do
+	{
+		printf( "\n\n Enter the number of withdrawls: " );
+		scanf( "%i", &number_Withdrawls );
+		fflush( stdin );
+		
+			
+		/* Trap to make user enter withdrawls greater than zero. */
+			
+		if( number_Withdrawls <= 0 )
+		printf( "\n\t Error: Withdrawls must be more than zero. Try again. \n" );
+			
+			
+		/* Trap to make user enter withdrawls less than fifty. */				
+		if( number_Withdrawls > 50 )
+		printf( "\n\t Error: Number of withdrawls exceeded. \n" );	
+		
+	
+	} while( number_Withdrawls <= 0 || number_Withdrawls > 50 );
+	
+	/* End loop. */
+	
+		
+	
+	
+	/* Loop to prompt user for number of deposits. */
+	
+	do
+	{
+		printf( "\n Enter the number of deposits: " );
+		scanf( "%i", &number_Deposits );
+		fflush( stdin );
+		
+		
+		/* Trap to make user enter deposits greater than zero. */
+			
+		if( number_Deposits <= 0 )
+		printf( "\n\t Error: Deposits must be more than zero. Try again. \n" );
+		
+		
+		/* Trap to make user enter deposits less than fifty. */
+			
+		if( number_Deposits > 50 )
+		printf( "\n\t Error: Number of deposits exceeded. \n" );
+				 
+	
+	} while( number_Deposits <= 0 || number_Deposits > 50 );
+	
+	/* End loop. */	
+	
+
+	
+	
+	
+	/* Prompt user for deposit amounts, input must be more than zero. */
+
+	/* Begin loop for deposits. */
+	
+	for( d = 0; d < number_Deposits; d++ )
+	{
+		do
+		{
+			printf( "\n Enter the amount of deposit #%i: ", d + 1 );
+			scanf( "%f", &deposits[d] );
+			fflush( stdin );
+			
+				
+			/* Trap user into entering a value more than zero. */
+				
+			if( deposits[d] <= 0.0 )
+			printf( "\n\t Error: Please enter a value greater than zero. \n" );
+
+					
+		} while ( deposits[d] <= 0.0 );
+		
+		
+		/* Count of total deposits. */
+		
+		total_Deposits = total_Deposits + deposits[d];
+			
+	} 
+	
+	/* End loop. */
+	
+	
+	
+	
+	/* Calculation of funds currently available for withdrawal. */
+	
+	running_Balance = total_Deposits + current_Balance;
+	
+	
+	printf( "\n\n\n Current balance: $%10.2f \n\n\n", running_Balance );
+
+	
+
+	
+	/* Prompt user for withdrawal amounts, input must be more than zero. */
+		
+	/* Begin loop for withdrawals. */
+	
+	for( w = 0; w < number_Withdrawls; w++ )
+	{
+		do
+		{
+			printf( "\n Enter the amount of withdrawal #%i: ", w + 1 );
+			scanf( "%f", &withdrawals[w] );
+			fflush( stdin );
+
+
+			/* Trap to check that withdrawal amount is not more than available balance. */
+			
+			if( withdrawals[w] > running_Balance )
+			printf( "\n\t Error: Insufficient funds. Try again. \n" );
+
+
+			/* Trap to check that withdrawal amount is more than zero. */
+			
+			if( withdrawals[w] <= 0.0 )
+			printf( "\n\t Error: Withdrawal amount must be more than zero. \n" );
+		
+					
+		}while ( withdrawals[w] > running_Balance || withdrawals[w] <= 0.0 );
+		/* End loop for user input. */
+
+				
+		
+		/* Count of total withdrawls. */
+		
+		total_Withdrawls = total_Withdrawls + withdrawals[w];
+		
+			
+		
+		/* Calculation of funds available as withdrawls are made. */
+		
+		running_Balance =  running_Balance - withdrawals[w];
+	
+		
+
+		/* Trap to exit loop if account balance reaches zero as withdrawls are made. */
+		
+		if( running_Balance == 0.0 )
+		{
+			printf( "\n\t Error: No funds available. \n" );
+	
+			number_Withdrawls = w + 1;
+
+			break;
+		}
+		/* End final balance check. */
+
+	
+	} /* End for loop. */
+
+
+	
+	
+	/* Display user input of deposits */
+		
+	for( d = 0; d < number_Deposits; d++ )
+	{
+		printf( "\n\n Deposit #%2i:		%10.2f", d + 1, deposits[d] );
+	}
+	
+	
+	
+	
+	/* Display user input of withdrawls */
+	
+	for( w = 0; w < number_Withdrawls; w++ )
+	{
+		printf( "\n\n Withdrawal #%2i:	%10.2f", w + 1, withdrawals[w] );
+	}
+
+			
+
+				
+	/* Calculation of closing balance. */
+	
+	final_Balance = final_Balance + running_Balance;
+	
+	
+	
+	
+	/* Display final balance and message. */
+		 
+	printf( "\n\n\n\n %s, your closing balance is $%.2f", name, final_Balance ); 		
+
+		if( final_Balance >= 50000.00 )
+			printf( "\n\n *** %s it is time to invest some money! ***", name );
+			
+		else if( final_Balance >= 15000.00 && final_Balance <= 49999.99 )
+				printf( "\n\n *** %s maybe you should consider a CD. ***", name );
+				
+		else if( final_Balance >= 1000.00 && final_Balance <= 14999.99 )
+				printf( "\n\n *** %s keep up the good work. ***", name );
+					
+		else if( final_Balance >= 0.00 && final_Balance <= 999.99 )
+				printf( "\n\n *** %s your balance is getting low! ***", name );
+						
+						
+
+						
+	/* Display banking statement summary. */
+				
+	printf( "\n\n\n\n	*** Banking Summary ***" );
+
+	
+	/* Opening balance. */
+	
+	printf( "\n\n Start Balance:		$%10.2f \n\n", current_Balance );
+	
+		
+	/* Deposits entered. */
+	
+	for( d = 0; d < number_Deposits; d++ )
+	{
+		printf( "\n Deposit #%2i:		$%10.2f \n", d + 1, deposits[d] );
+	}
+	
+		
+	/* Total funds available, deposit amounts plus start balance. */
+	
+	printf( "\n\n Available Balance:	$%10.2f \n\n", total_Deposits + current_Balance );
+
+	
+	/* Withdrawals entered. */
+	
+	for( w = 0; w < number_Withdrawls; w++ )
+	{
+		printf( "\n Withdrawal #%2i:	$%10.2f \n", w + 1, withdrawals[w] );
+	}
+	
+		
+	/* Closing balance. */
+	
+	printf( "\n\n Closing balance is	$%10.2f \n", final_Balance ); 		
+	
+	
+	
+	
+	getchar();
+	
+	return 0;
+} /* end main */
